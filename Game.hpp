@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "Graph.hpp"
+
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
@@ -19,16 +21,17 @@ private:
     //Variables
     size_t currentVertex;
     size_t goalVertex;
+    Graph Map;
 
     //Window
     sf::RenderWindow* window;
     sf::VideoMode videoMode;
     sf::Event ev;
 
-    //Mouse positions
-    sf::Vector2i mousePosWindow;
-
     //Private functions
+    void initMap();
+    void graphConfig();
+    void locConfig();
     void initVariables();
     void initWindow();
 
@@ -42,7 +45,7 @@ public:
 
     //Functions
     void pollEvents();
-    void checkGoalPosition();
+    void checkGoalPosition(int x, int y);
     void update();
     void render();
 };

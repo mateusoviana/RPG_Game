@@ -1,6 +1,59 @@
 #include "Game.hpp"
+#include <math.h>
 
 //Private functions
+void Game::initMap()
+{
+    this->graphConfig();
+    this->locConfig();
+}
+
+void Game::graphConfig()
+{
+    //Open the graph file
+    std::ifstream graphFile("C:\\Exame\\edges.txt");
+
+    //Read the number of vertex of the map and create the map graph
+    size_t n;
+    graphFile >> n;
+    Graph Map(n);
+
+    //Read and create the graph edges
+    std::size_t i, k;
+    int edge;
+    for (i = 0; i < Map.order; ++i)
+        for (k = 0; k < Map.order; ++k)
+        {
+            graphFile >> edge;
+            if (edge == 1)
+                Map.add_edge(i, k);
+        }
+
+    //Close the graph file
+    graphFile.close();
+
+    this->Map = Map;
+}
+
+void Game::locConfig()
+{
+    //Open the locations file
+    std::ifstream locFile("C:\\Exame\\locations.txt");
+
+    //Read the vertex locations
+    std::size_t i;
+    int x, y;
+    for (i = 0; i < this->Map.order; ++i)
+    {
+        locFile >> x;
+        locFile >> y;
+        this->Map.add_location(i, x, y);
+    }
+
+    //Close the locations file
+    locFile.close();
+}
+
 void Game::initVariables()
 {
     this->window = nullptr;
@@ -19,6 +72,7 @@ void Game::initWindow()
 //Constructor/Destructor
 Game::Game()
 {
+    this->initMap();
     this->initVariables();
     this->initWindow();
 }
@@ -51,19 +105,28 @@ void Game::pollEvents()
                 break;
             case sf::Event::MouseButtonPressed:
                 if (this->ev.mouseButton.button == sf::Mouse::Left)
-                    //checkGoalPosition();
+                    checkGoalPosition(sf::Mouse::getPosition(*this->window).x,
+                                      sf::Mouse::getPosition(*this->window).y);
                 break;
         }
     }
 }
 
+void Game::checkGoalPosition(int x, int y)
+{
+    int dist2;   //Distance^2
+    for (std::size_t i = 0; i < this->Map.order; ++i)
+    {
+        dist2 = (x - this->Map.xCoordinates[i]) * (x - this->Map.xCoordinates[i]) +
+                (y - this->Map.yCoordinates[i]) * (y - this->Map.yCoordinates[i]);
+        if (dist2 <= 324)
+            std::cout << "Ponto " << i << "\n";
+    };
+}
+
 void Game::update()
 {
     this->pollEvents();
-
-    std::cout << "Mouse pos:"
-        << sf::Mouse::getPosition(*this->window).x << " "
-        << sf::Mouse::getPosition(*this->window).y << " " << "\n";
 }
 
 void Game::render()
