@@ -4,6 +4,8 @@
 void Game::initVariables()
 {
     this->window = nullptr;
+    currentVertex = 0;
+    goalVertex = 0;
 }
 
 void Game::initWindow()
@@ -11,7 +13,7 @@ void Game::initWindow()
     this->videoMode.height = 640;
     this->videoMode.width = 874;
 
-    this->window = new sf::RenderWindow(this->videoMode, "Atravessando o DCTA", sf::Style::Titlebar | sf::Style::Close);
+    this->window = new sf::RenderWindow(this->videoMode, "A Jornada do Bixo", sf::Style::Titlebar | sf::Style::Close);
 }
 
 //Constructor/Destructor
@@ -47,6 +49,10 @@ void Game::pollEvents()
                 if (this->ev.key.code == sf::Keyboard::Escape)
                     this->window->close();
                 break;
+            case sf::Event::MouseButtonPressed:
+                if (this->ev.mouseButton.button == sf::Mouse::Left)
+                    //checkGoalPosition();
+                break;
         }
     }
 }
@@ -55,10 +61,9 @@ void Game::update()
 {
     this->pollEvents();
 
-    //Update mouse position
-    std::cout << "Mouse position: "
-    << sf::Mouse::getPosition(*this->window).x << " "
-    << sf::Mouse::getPosition(*this->window).y << "\n";
+    std::cout << "Mouse pos:"
+        << sf::Mouse::getPosition(*this->window).x << " "
+        << sf::Mouse::getPosition(*this->window).y << " " << "\n";
 }
 
 void Game::render()

@@ -17,6 +17,9 @@ class Game
 {
 private:
     //Variables
+    size_t currentVertex;
+    size_t goalVertex;
+
     //Window
     sf::RenderWindow* window;
     sf::VideoMode videoMode;
@@ -39,7 +42,7 @@ public:
 
     //Functions
     void pollEvents();
-    void updateMousePositions();
+    void checkGoalPosition();
     void update();
     void render();
 };
