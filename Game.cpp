@@ -11,7 +11,7 @@ void Game::initMap()
 void Game::graphConfig()
 {
     //Open the graph file
-    std::ifstream graphFile("C:\\Exame\\edges.txt");
+    std::ifstream graphFile("C:\\RPG_Game\\edges.txt");
 
     //Read the number of vertex of the map and create the map graph
     size_t n;
@@ -38,7 +38,7 @@ void Game::graphConfig()
 void Game::locConfig()
 {
     //Open the locations file
-    std::ifstream locFile("C:\\Exame\\locations.txt");
+    std::ifstream locFile("C:\\RPG_Game\\locations.txt");
 
     //Read the vertex locations
     std::size_t i;
@@ -144,7 +144,7 @@ void Game::render()
 
     //Create texture and load image file
     sf::Texture t;
-    t.loadFromFile("C:\\Exame\\map.png");
+    t.loadFromFile("C:\\RPG_Game\\map.png");
     sf::Sprite s(t);
 
     //Draw game objects
