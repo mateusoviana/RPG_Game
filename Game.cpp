@@ -49,11 +49,14 @@ void Game::locConfig()
     {
         locFile >> x;
         locFile >> y;
-        this->Map.add_location(i, x, y);
+        Map.add_location(i, x, y);
     }
 
     //Close the locations file
     locFile.close();
+
+    //Calculate distances between vertex locations
+    Map.calc_edges_weights();
 }
 
 void Game::initVariables()
@@ -123,7 +126,7 @@ void Game::checkGoalPosition(int x, int y)
         dist2 = (x - this->Map.xCoord(i)) * (x - this->Map.xCoord(i)) +
                 (y - this->Map.yCoord(i)) * (y - this->Map.yCoord(i));
         if (dist2 <= 324)
-            std::cout << "Ponto " << i << "\n";
+            std::cout << "Dist: " << Map.dist(0, i) << "\n";
     };
 }
 
