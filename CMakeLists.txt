@@ -10,7 +10,9 @@ add_executable(RPG_Game
         Game.hpp
         Graph.cpp
         Graph.hpp
-        main.cpp)
+        main.cpp
+        PriorityQueue.hpp
+        PriorityQueue.cpp)
 
 
 set(SFML_STATIC_LIBRARIES TRUE)
