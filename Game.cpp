@@ -21,8 +21,9 @@ void Game::graphConfig()
     //Read and create the graph edges
     std::size_t i, k;
     int edge;
-    for (i = 0; i < Map.order; ++i)
-        for (k = 0; k < Map.order; ++k)
+    int order = Map.get_order();
+    for (i = 0; i < order; ++i)
+        for (k = 0; k < order; ++k)
         {
             graphFile >> edge;
             if (edge == 1)
@@ -43,7 +44,8 @@ void Game::locConfig()
     //Read the vertex locations
     std::size_t i;
     int x, y;
-    for (i = 0; i < this->Map.order; ++i)
+    int order = Map.get_order();
+    for (i = 0; i < order; ++i)
     {
         locFile >> x;
         locFile >> y;
@@ -115,10 +117,11 @@ void Game::pollEvents()
 void Game::checkGoalPosition(int x, int y)
 {
     int dist2;   //Distance^2
-    for (std::size_t i = 0; i < this->Map.order; ++i)
+    int order = Map.get_order();
+    for (std::size_t i = 0; i < order; ++i)
     {
-        dist2 = (x - this->Map.xCoordinates[i]) * (x - this->Map.xCoordinates[i]) +
-                (y - this->Map.yCoordinates[i]) * (y - this->Map.yCoordinates[i]);
+        dist2 = (x - this->Map.xCoord(i)) * (x - this->Map.xCoord(i)) +
+                (y - this->Map.yCoord(i)) * (y - this->Map.yCoord(i));
         if (dist2 <= 324)
             std::cout << "Ponto " << i << "\n";
     };

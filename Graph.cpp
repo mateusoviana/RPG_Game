@@ -29,6 +29,21 @@ void Graph::add_location(std::size_t vertex, int x, int y)
     yCoordinates.push_back(y);
 }
 
+std::size_t Graph::get_order()
+{
+    return order;
+};
+
+int Graph::xCoord(std::size_t vertex)
+{
+    return xCoordinates[vertex];
+}
+
+int Graph::yCoord(std::size_t vertex)
+{
+    return yCoordinates[vertex];
+}
+
 std::vector<std::size_t> Graph::successors(std::size_t v) const
 {
     std::vector<std::size_t> suc;
