@@ -5,22 +5,24 @@ Graph::Graph() {}
 Graph::Graph(std::size_t n)
 {
     this->order = n;
-    this->matrix = new bool[n * n]{false};
+    edges_matrix = new bool[n * n]{false};
+    edges_weights = new float[order * order]{0.0};
 }
 
 Graph::~Graph()
 {
-    delete[] matrix;
+    delete[] edges_matrix;
+    delete[] edges_weights;
 }
 
 bool Graph::edge_exists(std::size_t u, std::size_t v) const
 {
-    return matrix[u * order + v];
+    return edges_matrix[u * order + v];
 }
 
 void Graph::add_edge(std::size_t from, std::size_t to)
 {
-    matrix[from * order + to] = true;
+    edges_matrix[from * order + to] = true;
 }
 
 void Graph::add_location(std::size_t vertex, int x, int y)
@@ -29,10 +31,26 @@ void Graph::add_location(std::size_t vertex, int x, int y)
     yCoordinates.push_back(y);
 }
 
+void Graph::calc_edges_weights()
+{
+    size_t i, k;
+    float dist;
+    for (i = 0; i < order; ++i)
+        for (k = 0; k < order; ++k)
+            if (edge_exists(i, k))
+                edges_weights[i * order + k] = this->dist(i, k);
+}
+
 std::size_t Graph::get_order()
 {
     return order;
 };
+
+float Graph::dist(std::size_t from, std::size_t to)
+{
+    return sqrt((xCoord(from)- xCoord(to)) * (xCoord(from)- xCoord(to)) +
+                (yCoord(from)- yCoord(to)) * (yCoord(from)- yCoord(to)));;
+}
 
 int Graph::xCoord(std::size_t vertex)
 {
