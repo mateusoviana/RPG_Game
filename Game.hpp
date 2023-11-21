@@ -19,8 +19,6 @@ class Game
 {
 private:
     //Variables
-    size_t currentVertex;
-    size_t goalVertex;
     Graph Map;
 
     //Window

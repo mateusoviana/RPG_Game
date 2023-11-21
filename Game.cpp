@@ -1,5 +1,4 @@
 #include "Game.hpp"
-#include <math.h>
 
 //Private functions
 void Game::initMap()
@@ -62,8 +61,6 @@ void Game::locConfig()
 void Game::initVariables()
 {
     this->window = nullptr;
-    currentVertex = 0;
-    goalVertex = 0;
 }
 
 void Game::initWindow()
@@ -126,7 +123,11 @@ void Game::checkGoalPosition(int x, int y)
         dist2 = (x - this->Map.xCoord(i)) * (x - this->Map.xCoord(i)) +
                 (y - this->Map.yCoord(i)) * (y - this->Map.yCoord(i));
         if (dist2 <= 324)
-            std::cout << "Dist: " << Map.dist(0, i) << "\n";
+        {
+            Map.goalVertex = i;
+            std::cout << Map.currentVertex + 1 << " " << Map.goalVertex + 1 << "\n";
+            Map.currentVertex =  Map.goalVertex;
+        }
     };
 }
 

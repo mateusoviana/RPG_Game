@@ -1,6 +1,6 @@
 #include "PriorityQueue.hpp"
 
-void PriorityQueue::heapifyUp(int index) {
+void PriorityQueue::siftUp(int index) {
     while (index > 0) {
         int parent = (index - 1) / 2;
         if (heap[index].second < heap[parent].second) {
@@ -12,7 +12,7 @@ void PriorityQueue::heapifyUp(int index) {
     }
 }
 
-void PriorityQueue::heapifyDown(int index) {
+void PriorityQueue::siftDown(int index) {
     int leftChild = 2 * index + 1;
     int rightChild = 2 * index + 2;
     int smallest = index;
@@ -27,13 +27,13 @@ void PriorityQueue::heapifyDown(int index) {
 
     if (smallest != index) {
         std::swap(heap[index], heap[smallest]);
-        heapifyDown(smallest);
+        siftDown(smallest);
     }
 }
 
 void PriorityQueue::push(int number, float weight) {
     heap.emplace_back(number, weight);
-    heapifyUp(heap.size() - 1);
+    siftUp(heap.size() - 1);
 }
 
 int PriorityQueue::pop() {
@@ -44,7 +44,7 @@ int PriorityQueue::pop() {
     std::pair<int, float> topElement = heap[0];
     heap[0] = heap.back();
     heap.pop_back();
-    heapifyDown(0);
+    siftDown(0);
 
     return topElement.first;
 }
