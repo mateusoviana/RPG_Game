@@ -5,9 +5,9 @@ class PriorityQueue {
 private:
     std::vector<std::pair<int, float>> heap; // pair: (number, weight)
 
-    void heapifyUp(int index);
+    void siftUp(int index);
 
-    void heapifyDown(int index);
+    void siftDown(int index);
 
 public:
     void push(int number, float weight);
