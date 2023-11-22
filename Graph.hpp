@@ -4,18 +4,15 @@
 #include <limits>
 #include "PriorityQueue.hpp"
 
+#include <iostream>
 #include <fstream>
 
 class Graph {
 public:
     Graph();
 
-    Graph(std::size_t n);
-
-    ~Graph();
-
-    size_t currentVertex = 0;
-    size_t goalVertex = 0;
+    size_t currentVertex;
+    size_t goalVertex;
 
     bool edge_exists(std::size_t from, std::size_t to) const;
     void add_edge(std::size_t from, std::size_t to);
@@ -28,14 +25,16 @@ public:
     int xCoord(std::size_t vertex);
     int yCoord(std::size_t vertex);
 
-    std::stack<size_t> aStarSearch(size_t current, size_t goal);
+    void locConfig();
+
+    void aStarSearch(size_t current, size_t goal);
 
     std::vector<std::size_t> successors(std::size_t v) const;
 
 private:
     std::size_t order;
-    bool* edges_matrix;
-    float* edges_weights;
+    std::vector<bool> edges_matrix;
+    std::vector<float> edges_weights;
     std::vector<int> xCoordinates;
     std::vector<int> yCoordinates;
 };
