@@ -1,20 +1,30 @@
 #include "Graph.hpp"
 
-Graph::Graph() {}
-
-Graph::Graph(std::size_t n)
+Graph::Graph()
 {
+    //Open the graph file
+    std::ifstream graphFile("C:\\RPG_Game\\edges.txt");
+
+    //Read the number of vertex of the map and create the map graph
+    size_t n;
+    graphFile >> n;
     order = n;
     currentVertex = 0;
     goalVertex = 0;
-    edges_matrix = new bool[n * n]{false};
-    edges_weights = new float[order * order]{0.0};
-}
 
-Graph::~Graph()
-{
-    delete[] edges_matrix;
-    delete[] edges_weights;
+    //Read and create the graph edges
+    int edge;
+    for (std::size_t i = 0; i < order; ++i)
+        for (std::size_t k = 0; k < order; ++k)
+        {
+            graphFile >> edge;
+            if (edge == 1)
+                edges_matrix.push_back(true);
+            else edges_matrix.push_back(false);
+        }
+
+    //Close the graph file
+    graphFile.close();
 }
 
 bool Graph::edge_exists(std::size_t u, std::size_t v) const
@@ -42,11 +52,11 @@ float Graph::dist(std::size_t from, std::size_t to)
 void Graph::calc_edges_weights()
 {
     size_t i, k;
-    float dist;
     for (i = 0; i < order; ++i)
         for (k = 0; k < order; ++k)
             if (edge_exists(i, k))
-                edges_weights[i * order + k] = this->dist(i, k);
+                edges_weights.push_back(this->dist(i, k));
+            else edges_weights.push_back(0.0);
 }
 
 float Graph::edge_weight(std::size_t from, std::size_t to) const
@@ -69,7 +79,29 @@ int Graph::yCoord(std::size_t vertex)
     return yCoordinates[vertex];
 }
 
-std::stack<std::size_t> Graph::aStarSearch(std::size_t from, std::size_t goal)
+void Graph::locConfig()
+{
+    //Open the locations file
+    std::ifstream locFile("C:\\RPG_Game\\locations.txt");
+
+    //Read the vertex locations
+    ;
+    int x, y;
+    for (std::size_t i = 0; i < order; ++i)
+    {
+        locFile >> x;
+        locFile >> y;
+        add_location(i, x, y);
+    }
+
+    //Close the locations file
+    locFile.close();
+
+    //Calculate distances between vertex locations
+    calc_edges_weights();
+}
+
+void Graph::aStarSearch(std::size_t from, std::size_t goal)
 {
     PriorityQueue priorityQueue;
     priorityQueue.push(from, 0.0);
@@ -100,6 +132,7 @@ std::stack<std::size_t> Graph::aStarSearch(std::size_t from, std::size_t goal)
         for (size_t k = 0; k < suc.size(); ++k)
         {
             size_t next = suc[k];
+
             float newCost = cost[current] + edge_weight(current, next);
             if (newCost < cost[next])
             {
@@ -122,7 +155,12 @@ std::stack<std::size_t> Graph::aStarSearch(std::size_t from, std::size_t goal)
     delete cameFrom;
     delete cost;
 
-    return path;
+    while (!path.empty())
+    {
+        std::cout << path.top() + 1 << " ";
+        path.pop();
+    }
+    std::cout << "\n";
 }
 
 std::vector<std::size_t> Graph::successors(std::size_t v) const

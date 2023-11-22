@@ -28,8 +28,6 @@ private:
 
     //Private functions
     void initMap();
-    void graphConfig();
-    void locConfig();
     void initVariables();
     void initWindow();
 

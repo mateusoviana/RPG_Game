@@ -3,59 +3,9 @@
 //Private functions
 void Game::initMap()
 {
-    this->graphConfig();
-    this->locConfig();
-}
-
-void Game::graphConfig()
-{
-    //Open the graph file
-    std::ifstream graphFile("C:\\RPG_Game\\edges.txt");
-
-    //Read the number of vertex of the map and create the map graph
-    size_t n;
-    graphFile >> n;
-    Graph Map(n);
-
-    //Read and create the graph edges
-    std::size_t i, k;
-    int edge;
-    int order = Map.get_order();
-    for (i = 0; i < order; ++i)
-        for (k = 0; k < order; ++k)
-        {
-            graphFile >> edge;
-            if (edge == 1)
-                Map.add_edge(i, k);
-        }
-
-    //Close the graph file
-    graphFile.close();
-
-    this->Map = Map;
-}
-
-void Game::locConfig()
-{
-    //Open the locations file
-    std::ifstream locFile("C:\\RPG_Game\\locations.txt");
-
-    //Read the vertex locations
-    std::size_t i;
-    int x, y;
-    int order = Map.get_order();
-    for (i = 0; i < order; ++i)
-    {
-        locFile >> x;
-        locFile >> y;
-        Map.add_location(i, x, y);
-    }
-
-    //Close the locations file
-    locFile.close();
-
-    //Calculate distances between vertex locations
-    Map.calc_edges_weights();
+    Graph graph;
+    Map = graph;
+    Map.locConfig();
 }
 
 void Game::initVariables()
@@ -117,18 +67,20 @@ void Game::pollEvents()
 void Game::checkGoalPosition(int x, int y)
 {
     int dist2;   //Distance^2
-    int order = Map.get_order();
+    std::size_t order = Map.get_order();
     for (std::size_t i = 0; i < order; ++i)
     {
         dist2 = (x - this->Map.xCoord(i)) * (x - this->Map.xCoord(i)) +
                 (y - this->Map.yCoord(i)) * (y - this->Map.yCoord(i));
+
         if (dist2 <= 324)
         {
             Map.goalVertex = i;
-            std::cout << Map.currentVertex + 1 << " " << Map.goalVertex + 1 << "\n";
+            std::cout << "Current Vertex: " << Map.currentVertex + 1 << " Goal Vertex: " << Map.goalVertex + 1 << "\n";
+            Map.aStarSearch(Map.currentVertex, Map.goalVertex);
             Map.currentVertex =  Map.goalVertex;
         }
-    };
+    }
 }
 
 void Game::update()
